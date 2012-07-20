@@ -5,8 +5,8 @@ import (
 	"math"
 	"reflect"
 	"strings"
-	"errhandler"
 	"encoding/binary"
+	"github.com/bemasher/errhandler"
 )
 
 // Define constants defining all of the possible tag types

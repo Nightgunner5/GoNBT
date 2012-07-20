@@ -4,8 +4,8 @@ import (
 	"os"
 	"fmt"
 	"nbt"
-	"errhandler"
 	"encoding/json"
+	"github.com/bemasher/errhandler"
 )
 
 const (
