@@ -4,7 +4,6 @@ import (
 	"encoding/binary"
 	"github.com/bemasher/errhandler"
 	"io"
-	"math"
 	"reflect"
 	"strings"
 )
@@ -167,49 +166,43 @@ func readTag(r io.Reader, tagType TagType, data reflect.Value) (name string, new
 
 // Reads a single byte.
 func ReadByte(r io.Reader) (i byte) {
-	b := make([]byte, 1)
-	_, err := r.Read(b)
+	err := binary.Read(r, binary.BigEndian, &i)
 	errhandler.Handle("Error reading Byte: ", err)
-	i = b[0]
 	return
 }
 
 // Reads a signed 16-bit integer.
 func ReadShort(r io.Reader) (i int16) {
 	err := binary.Read(r, binary.BigEndian, &i)
-	errhandler.Handle("Error reading int16: ", err)
+	errhandler.Handle("Error reading Short: ", err)
 	return
 }
 
 // Reads a signed 32-bit integer.
 func ReadInt(r io.Reader) (i int32) {
 	err := binary.Read(r, binary.BigEndian, &i)
-	errhandler.Handle("Error reading int32: ", err)
+	errhandler.Handle("Error reading Int: ", err)
 	return
 }
 
 // Reads a signed 64-bit integer.
 func ReadLong(r io.Reader) (i int64) {
 	err := binary.Read(r, binary.BigEndian, &i)
-	errhandler.Handle("Error reading int32: ", err)
+	errhandler.Handle("Error reading Long: ", err)
 	return
 }
 
 // Reads a 32-bit IEEE-754 floating point value.
 func ReadFloat(r io.Reader) (i float32) {
-	b := make([]byte, 4)
-	_, err := r.Read(b)
+	err := binary.Read(r, binary.BigEndian, &i)
 	errhandler.Handle("Error reading Float: ", err)
-	i = math.Float32frombits(binary.BigEndian.Uint32(b))
 	return
 }
 
 // Reads a 64-bit IEEE-754 floating point value.
 func ReadDouble(r io.Reader) (i float64) {
-	b := make([]byte, 8)
-	_, err := r.Read(b)
+	err := binary.Read(r, binary.BigEndian, &i)
 	errhandler.Handle("Error reading Double: ", err)
-	i = math.Float64frombits(binary.BigEndian.Uint64(b))
 	return
 }
 
@@ -232,6 +225,7 @@ func ReadString(r io.Reader) string {
 // Reads an array of 32-bit ints, the array length (signed 32-bit int) is read first, then the array of ints.
 func ReadIntArray(r io.Reader) (list []int32) {
 	length := int(ReadInt(r))
+	list = make([]int32, 0, length)
 	for i := 0; i < length; i++ {
 		list = append(list, ReadInt(r))
 	}
