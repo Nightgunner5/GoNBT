@@ -10,7 +10,7 @@ import (
 
 // Define constants defining all of the possible tag types
 const (
-	TAG_END = iota
+	TAG_END TagType = iota
 	TAG_BYTE
 	TAG_SHORT
 	TAG_INT
