@@ -234,7 +234,9 @@ func ReadIntArray(r io.Reader) (list []int32) {
 
 // Reads a list of tags into the given data structure until a tag of TAG_END is encountered.
 func ReadCompound(r io.Reader, data reflect.Value) {
-	for _, tagType := readTag(r, TAG_UNKNOWN, data); tagType != TAG_END; _, tagType = readTag(r, TAG_UNKNOWN, data) {
+	tagType := TAG_UNKNOWN
+	for tagType != TAG_END {
+		_, tagType = readTag(r, TAG_UNKNOWN, data)
 	}
 }
 
